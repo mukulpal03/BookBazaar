@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { config } from "../config/env.js";
+import { AvailableUserRoles, userRoleEnum } from "../utils/constant.util.js";
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -28,6 +29,13 @@ const userSchema = new mongoose.Schema({
   refreshToken: {
     type: String,
   },
+  role: {
+    type: String,
+    required: true,
+    trim: true,
+    enum: AvailableUserRoles,
+    default: userRoleEnum.USER,
+  },
 });
 
 userSchema.pre("save", async function (next) {
@@ -42,9 +50,13 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 };
 
 userSchema.methods.generateAccessToken = function () {
-  return jwt.sign({ _id: this._id }, config.ACCESS_TOKEN_SECRET, {
-    expiresIn: config.ACCESS_TOKEN_EXPIRY,
-  });
+  return jwt.sign(
+    { _id: this._id, role: this.role },
+    config.ACCESS_TOKEN_SECRET,
+    {
+      expiresIn: config.ACCESS_TOKEN_EXPIRY,
+    },
+  );
 };
 
 userSchema.methods.generateRefreshToken = function () {

@@ -8,17 +8,22 @@ import {
   updateBook,
 } from "../controllers/book.controllers.js";
 import { isLoggedIn } from "../middlewares/auth.middleware.js";
+import { userRoleEnum } from "../utils/constant.util.js";
+import { authorizeRoles } from "../middlewares/authorize.middleware.js";
 
 const router = Router();
 
 router.use(isLoggedIn);
 
-router.route("/").get(asyncHandler(getAllBooks)).post(asyncHandler(createBook));
+router
+  .route("/")
+  .get(asyncHandler(getAllBooks))
+  .post(authorizeRoles([userRoleEnum.ADMIN]), asyncHandler(createBook));
 
 router
   .route("/:id")
   .get(asyncHandler(getBookById))
-  .put(asyncHandler(updateBook))
-  .delete(asyncHandler(deleteBook));
+  .put(authorizeRoles([userRoleEnum.ADMIN]), asyncHandler(updateBook))
+  .delete(authorizeRoles([userRoleEnum.ADMIN]), asyncHandler(deleteBook));
 
 export default router;

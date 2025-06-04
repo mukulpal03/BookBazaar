@@ -17,3 +17,10 @@ export const genreEnum = {
 };
 
 export const AvailableBooksGenre = Object.values(genreEnum);
+
+export const userRoleEnum = {
+  USER: "user",
+  ADMIN: "admin",
+};
+
+export const AvailableUserRoles = Object.values(userRoleEnum);

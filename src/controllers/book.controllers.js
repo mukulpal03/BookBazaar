@@ -18,7 +18,7 @@ const createBook = async (req, res) => {
 };
 
 const getAllBooks = async (req, res) => {
-  const books = await getBookService();
+  const books = await getAllBooksService();
 
   return res
     .status(200)
