@@ -8,10 +8,12 @@ import {
   registerUser,
 } from "../controllers/user.controllers.js";
 import { isLoggedIn } from "../middlewares/auth.middleware.js";
+import { validateData } from "../middlewares/validate.middleware.js";
+import { loginUserSchema, registerUserSchema } from "../validators/user.validators.js";
 
 const router = Router();
 
-router.route("/register").post(asyncHandler(registerUser));
+router.route("/register").post(validateData(registerUserSchema), asyncHandler(registerUser));
 
 router.route("/login").post(asyncHandler(loginUser));
 
