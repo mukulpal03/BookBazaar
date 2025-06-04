@@ -14,7 +14,7 @@ async function generateAccessAndRefreshToken(userID) {
 
     return { accessToken, refreshToken };
   } catch (error) {
-    throw new ApiError(500, error.message);
+    throw new ApiError(error.statusCode, error.message);
   }
 }
 
@@ -37,7 +37,7 @@ const createUser = async (userData) => {
     return { user, accessToken, refreshToken };
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(500, error.message);
+    throw new ApiError(error.statusCode, error.message);
   }
 };
 
@@ -64,7 +64,7 @@ const validateUserCredentials = async (userData) => {
     return { user, accessToken, refreshToken };
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(500, error.message);
+    throw new ApiError(error.statusCode, error.message);
   }
 };
 
@@ -77,7 +77,7 @@ const inValidateTokenInDB = async (userId) => {
     });
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(500, error.message);
+    throw new ApiError(error.statusCode, error.message);
   }
 };
 

@@ -1,6 +1,7 @@
 import express from "express";
-import authRoutes from "./routes/user.routes.js";
 import cookieParser from "cookie-parser";
+import authRoutes from "./routes/user.routes.js";
+import bookRoutes from "./routes/book.routes.js";
 
 const app = express();
 
@@ -8,6 +9,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/books", bookRoutes);
 
 app.use((err, _req, res, _next) => {
   const statusCode = err.statusCode ?? 500;
