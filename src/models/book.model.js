@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { AvailableBooksGenre } from "../utils/constant.util.js";
+import Review from "./review.model.js";
 
 const bookSchema = new mongoose.Schema(
   {
@@ -53,6 +54,12 @@ const bookSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+bookSchema.post("findOneAndDelete", async function (doc) {
+  if (doc) {
+    await Review.deleteMany({ book: doc._id });
+  }
+});
 
 const Book = mongoose.model("Book", bookSchema);
 

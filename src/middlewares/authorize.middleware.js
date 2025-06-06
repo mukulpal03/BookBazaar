@@ -4,9 +4,6 @@ const authorizeRoles = (roles) => {
   return (req, _res, next) => {
     const { role } = req.user;
 
-    console.log(role);
-    
-
     if (roles.includes(role)) {
       return next();
     }
