@@ -24,3 +24,21 @@ export const userRoleEnum = {
 };
 
 export const AvailableUserRoles = Object.values(userRoleEnum);
+
+export const paginationOptions = ({
+  page,
+  limit,
+  sort = { createdAt: -1 },
+  customLabels = {},
+} = {}) => {
+  return {
+    page: parseInt(page, 10),
+    limit: parseInt(limit, 10),
+    sort,
+    customLabels: {
+      docs: "docs",
+      totalDocs: "totalDocs",
+      ...customLabels,
+    },
+  };
+};

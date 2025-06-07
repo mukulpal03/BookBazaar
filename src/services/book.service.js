@@ -1,6 +1,7 @@
 import Book from "../models/book.model.js";
 import { ApiError } from "../utils/apiError.util.js";
 import mongoose from "mongoose";
+import { paginationOptions } from "../utils/constant.util.js";
 
 const createBookService = async (BookData) => {
   try {
@@ -20,9 +21,22 @@ const createBookService = async (BookData) => {
   }
 };
 
-const getAllBooksService = async () => {
+const getAllBooksService = async (page, limit) => {
   try {
-    const books = await Book.find({});
+    const bookAggregate = Book.aggregate([{ $match: {} }]);
+
+    const books = await Book.aggregatePaginate(
+      bookAggregate,
+      paginationOptions({
+        page,
+        limit,
+        customLabels: {
+          docs: "books",
+          totalDocs: "totalBooks",
+        },
+      }),
+    );
+
     return { books };
   } catch (error) {
     console.error(error.message);

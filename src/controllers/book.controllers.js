@@ -18,7 +18,8 @@ const createBook = async (req, res) => {
 };
 
 const getAllBooks = async (req, res) => {
-  const books = await getAllBooksService();
+  const { page = 1, limit = 1 } = req.query;
+  const { books } = await getAllBooksService(page, limit);
 
   return res
     .status(200)
