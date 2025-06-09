@@ -1,7 +1,7 @@
 import {
   addToCartService,
   clearCartService,
-  getUserCartService,
+  getCartService,
   removeFromCartService,
 } from "../services/cart.service.js";
 import { ApiResponse } from "../utils/apiRes.util.js";
@@ -9,7 +9,7 @@ import { ApiResponse } from "../utils/apiRes.util.js";
 const getCart = async (req, res) => {
   const userId = req.user._id;
 
-  const cart = await getUserCartService(userId);
+  const cart = await getCartService(userId);
 
   return res
     .status(200)

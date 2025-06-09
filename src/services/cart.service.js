@@ -13,9 +13,35 @@ const getCartService = async (userId) => {
     {
       $unwind: "$items",
     },
+    {
+      $lookup: {
+        from: "books",
+        localField: "items.book",
+        foreignField: "_id",
+        as: "bookDetails",
+      },
+    },
+    {
+      $unwind: "$bookDetails",
+    },
+    {
+      $project: {
+        _id: 0,
+        bookId: "$items.book",
+        quantity: "$items.quantity",
+        title: "$bookDetails.title",
+        author: "$bookDetails.author",
+        price: "$bookDetails.price",
+      },
+    },
   ]);
 
-  return cart;
+  return (
+    cart ?? {
+      _id: null,
+      items: [],
+    }
+  );
 };
 
 const addToCartService = async (bookId, userId, quantity) => {
@@ -62,10 +88,15 @@ const addToCartService = async (bookId, userId, quantity) => {
 
     await cart.save();
 
-    return cart;
+    const newCart = await getCartService(userId);
+
+    return newCart;
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(error.statusCode, error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 };
 
@@ -95,7 +126,7 @@ const removeFromCartService = async (bookId, userId) => {
       throw new ApiError(404, "Book does not exist in the cart");
     }
 
-    const updatedCart = await Cart.findByIdAndUpdate(
+    await Cart.findByIdAndUpdate(
       cart._id,
       {
         $pull: {
@@ -105,10 +136,15 @@ const removeFromCartService = async (bookId, userId) => {
       { new: true },
     );
 
-    return updatedCart;
+    const newCart = await getCartService(userId);
+
+    return newCart;
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(error.statusCode, error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 };
 
@@ -124,7 +160,9 @@ const clearCartService = async (userId) => {
 
     await cart.save();
 
-    return cart;
+    const newCart = await getCartService(userId);
+
+    return newCart;
   } catch (error) {
     console.error(error.message);
     throw new ApiError(
@@ -135,7 +173,7 @@ const clearCartService = async (userId) => {
 };
 
 export {
-  getUserCartService,
+  getCartService,
   addToCartService,
   removeFromCartService,
   clearCartService,
