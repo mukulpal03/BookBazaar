@@ -1,29 +1,37 @@
 export const genreEnum = {
-  Fiction: "fiction",
-  NON_FICTION: "non_fiction",
-  SCIENCE_FICTION: "science_fiction",
-  Fantasy: "fantasy",
-  Mystery: "mystery",
-  Thriller: "thriller",
-  Horror: "horror",
-  Romance: "romance",
-  Biography: "biography",
+  FICTION: "FICTION",
+  NON_FICTION: "NON_FICTION",
+  SCIENCE_FICTION: "SCIENCE_FICTION",
+  FANTASY: "FANTASY",
+  MYSTERY: "MYSTERY",
+  THRILLER: "THRILLER",
+  HORROR: "HORROR",
+  ROMANCE: "ROMANCE",
+  BIOGRAPHY: "BIOGRAPHY",
   History: "history",
-  SELF_HELP: "self_help",
-  Childrens: "childrens",
-  YOUNG_ADULT: "young_adult",
-  Programming: "programming",
-  Other: "other",
+  SELF_HELP: "SELF_HELP",
+  CHILDRENS: "CHILDRENS",
+  YOUNG_ADULT: "YOUNG_ADULT",
+  PROGRAMMING: "PROGRAMMING",
+  OTHER: "otherOTHER",
 };
 
 export const AvailableBooksGenre = Object.values(genreEnum);
 
 export const userRoleEnum = {
-  USER: "user",
-  ADMIN: "admin",
+  USER: "USER",
+  ADMIN: "ADMIN",
 };
 
 export const AvailableUserRoles = Object.values(userRoleEnum);
+
+export const orderStatusEnum = {
+  PENDING: "PENDING",
+  DELIVERED: "DELIVERED",
+  CANCELLED: "CANCELLED",
+};
+
+export const AvailableOrderStatus = Object.values(orderStatusEnum);
 
 export const paginationOptions = ({
   page,
