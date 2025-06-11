@@ -18,7 +18,7 @@ const isLoggedIn = async (req, _res, next) => {
     next();
   } catch (error) {
     console.error(error.message);
-    return next(new ApiError(500, error.message));
+    return next(new ApiError(500, error.message || "Internal server error"));
   }
 };
 

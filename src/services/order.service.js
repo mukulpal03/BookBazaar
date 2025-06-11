@@ -2,10 +2,9 @@ import Book from "../models/book.model.js";
 import { ApiError } from "../utils/apiError.util.js";
 import { getCartService } from "./cart.service.js";
 import Order from "../models/order.model.js";
-import Cart from "../models/cart.model.js";
 import mongoose from "mongoose";
 
-const checkoutService = async (userId) => {
+const createOrderService = async (userId) => {
   try {
     const cart = await getCartService(userId);
 
@@ -54,17 +53,6 @@ const checkoutService = async (userId) => {
       orderItems,
       totalAmount,
     });
-
-    await Cart.findOneAndUpdate(
-      {
-        owner: userId,
-      },
-      {
-        $set: {
-          items: [],
-        },
-      },
-    );
 
     return order;
   } catch (error) {
@@ -160,7 +148,10 @@ const getOrderByIdService = async (orderId, userId) => {
   }
 
   try {
-    const order = await Order.findOne({ _id: orderId }).populate("user", "username email");
+    const order = await Order.findOne({ _id: orderId }).populate(
+      "user",
+      "username email",
+    );
 
     if (!order) {
       throw new ApiError(404, "Order not found");
@@ -180,4 +171,4 @@ const getOrderByIdService = async (orderId, userId) => {
   }
 };
 
-export { checkoutService, getAllOrdersService, getOrderByIdService };
+export { createOrderService, getAllOrdersService, getOrderByIdService };

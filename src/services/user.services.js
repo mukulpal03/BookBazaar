@@ -1,5 +1,7 @@
+import ApiKey from "../models/api-key.model.js";
 import User from "../models/user.model.js";
 import { ApiError } from "../utils/apiError.util.js";
+import crypto from "crypto";
 
 async function generateAccessAndRefreshToken(userID) {
   try {
@@ -14,7 +16,11 @@ async function generateAccessAndRefreshToken(userID) {
 
     return { accessToken, refreshToken };
   } catch (error) {
-    throw new ApiError(error.statusCode, error.message);
+    console.error(error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 }
 
@@ -37,7 +43,10 @@ const createUser = async (userData) => {
     return { user, accessToken, refreshToken };
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(error.statusCode, error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 };
 
@@ -64,7 +73,10 @@ const validateUserCredentials = async (userData) => {
     return { user, accessToken, refreshToken };
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(error.statusCode, error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 };
 
@@ -77,18 +89,44 @@ const inValidateTokenInDB = async (userId) => {
     });
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(error.statusCode, error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 };
 
 const findUserById = async (userId) => {
-  const user = await User.findById(userId);
+  try {
+    const user = await User.findById(userId);
 
-  if (user) {
-    return user;
+    if (user) {
+      return user;
+    }
+
+    return false;
+  } catch (error) {
+    console.error(error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
+};
 
-  return false;
+const generateApiKeyService = async (userId) => {
+  try {
+    const key = crypto.randomBytes(32).toString();
+    const apiKey = await ApiKey.create({ owner: userId, key });
+
+    return apiKey;
+  } catch (error) {
+    console.error(error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
+  }
 };
 
 export {
@@ -97,4 +135,5 @@ export {
   inValidateTokenInDB,
   findUserById,
   generateAccessAndRefreshToken,
+  generateApiKeyService,
 };

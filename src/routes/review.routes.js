@@ -6,16 +6,21 @@ import {
   deleteReview,
   getAllReviews,
 } from "../controllers/review.controllers.js";
+import { validateApiKey } from "../middlewares/api-key.middleware.js";
+import { validateData } from "../middlewares/validate.middleware.js";
+import { reviewValidationSchema } from "../validators/review.validators.js";
 
 const router = Router({ mergeParams: true });
 
-router.use(isLoggedIn);
-
 router
   .route("/")
-  .get(asyncHandler(getAllReviews))
-  .post(asyncHandler(createReview));
+  .get(validateApiKey, asyncHandler(getAllReviews))
+  .post(
+    isLoggedIn,
+    validateData(reviewValidationSchema),
+    asyncHandler(createReview),
+  );
 
-router.route("/:reviewId").delete(asyncHandler(deleteReview));
+router.route("/:reviewId").delete(isLoggedIn, asyncHandler(deleteReview));
 
 export default router;

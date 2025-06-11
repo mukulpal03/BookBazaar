@@ -5,6 +5,7 @@ import bookRoutes from "./routes/book.routes.js";
 import reviewRoutes from "./routes/review.routes.js";
 import cartRoutes from "./routes/cart.routes.js";
 import orderRoutes from "./routes/order.routes.js";
+import paymentRoutes from "./routes/payment.routes.js";
 
 const app = express();
 
@@ -15,7 +16,8 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/books", bookRoutes);
 app.use("/api/v1/books/:bookId/reviews", reviewRoutes);
 app.use("/api/v1/cart", cartRoutes);
-app.use("/api/v1/order", orderRoutes);
+app.use("/api/v1/orders", orderRoutes);
+app.use("/api/v1/payments", paymentRoutes);
 
 app.use((err, _req, res, _next) => {
   const statusCode = err.statusCode ?? 500;

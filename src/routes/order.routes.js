@@ -6,10 +6,12 @@ import {
   getOrders,
   placeOrder,
 } from "../controllers/order.controllers.js";
+import { validateApiKey } from "../middlewares/api-key.middleware.js";
 
 const router = Router();
 
 router.use(isLoggedIn);
+router.use(validateApiKey);
 
 router.route("/").post(asyncHandler(placeOrder)).get(asyncHandler(getOrders));
 

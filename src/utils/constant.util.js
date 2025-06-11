@@ -27,6 +27,7 @@ export const AvailableUserRoles = Object.values(userRoleEnum);
 
 export const orderStatusEnum = {
   PENDING: "PENDING",
+  PAID: "PAID",
   DELIVERED: "DELIVERED",
   CANCELLED: "CANCELLED",
 };
@@ -50,3 +51,11 @@ export const paginationOptions = ({
     },
   };
 };
+
+export const paymentStatusEnum = {
+  PENDING: "PENDING",
+  SUCCESS: "SUCCESS",
+  FAILED: "FAILED",
+};
+
+export const AvailablePaymentStatus = Object.values(paymentStatus);

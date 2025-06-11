@@ -3,6 +3,7 @@ import {
   createUser,
   findUserById,
   generateAccessAndRefreshToken,
+  generateApiKeyService,
   inValidateTokenInDB,
   validateUserCredentials,
 } from "../services/user.services.js";
@@ -124,4 +125,21 @@ const getUser = async (req, res) => {
   );
 };
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken, getUser };
+const generateApiKey = async (req, res) => {
+  const userId = req.user._id;
+
+  const apiKey = await generateApiKeyService(userId);
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, "API key generated successfully", apiKey));
+};
+
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  refreshAccessToken,
+  getUser,
+  generateApiKey,
+};
