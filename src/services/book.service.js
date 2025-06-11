@@ -17,7 +17,10 @@ const createBookService = async (BookData) => {
     return { book };
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(error.statusCode, error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 };
 
@@ -40,7 +43,10 @@ const getAllBooksService = async (page, limit) => {
     return { books };
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(error.statusCode, error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 };
 
@@ -59,7 +65,10 @@ const getBookByIdService = async (id) => {
     return { book };
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(error.statusCode, error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 };
 
@@ -74,7 +83,10 @@ const updateBookService = async (id, BookData) => {
     return { book };
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(error.statusCode, error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 };
 
@@ -91,7 +103,10 @@ const deleteBookService = async (id) => {
     }
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(error.statusCode, error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 };
 

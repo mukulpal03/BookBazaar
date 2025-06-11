@@ -27,7 +27,10 @@ const createReviewService = async (reviewData, userId, bookId) => {
     return { review };
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(error.statusCode, error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 };
 
@@ -43,7 +46,10 @@ const getReviewsService = async (bookId) => {
     return { reviews };
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(500, error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 };
 
@@ -64,7 +70,10 @@ const deleteReviewService = async (reviewId, userId) => {
     await Review.findByIdAndDelete(review._id);
   } catch (error) {
     console.error(error.message);
-    throw new ApiError(error.statusCode, error.message);
+    throw new ApiError(
+      error.statusCode || 500,
+      error.message || "Internal server error",
+    );
   }
 };
 
