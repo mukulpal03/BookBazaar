@@ -1,11 +1,9 @@
-import { config } from "../config/env.js";
 import {
   createOrderService,
   getAllOrdersService,
   getOrderByIdService,
 } from "../services/order.service.js";
 import { ApiResponse } from "../utils/apiRes.util.js";
-import { orderConfirmationMailContent, sendMail } from "../utils/mail.util.js";
 
 const placeOrder = async (req, res) => {
   const userId = req.user._id;

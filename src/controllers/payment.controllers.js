@@ -1,9 +1,11 @@
+import { config } from "../config/env.js";
 import {
   createPayment,
   validateOrder,
   verifyPaymentAndUpdateOrderStatus,
 } from "../services/payment.service.js";
 import { ApiError } from "../utils/apiError.util.js";
+import { orderConfirmationMailContent, sendMail } from "../utils/mail.util.js";
 
 const CreatePayment = async (req, res) => {
   const { orderId } = req.body;
@@ -39,19 +41,26 @@ const verifyPayment = async (req, res) => {
     throw new ApiError(400, "Missing Razorpay details");
   }
 
-  await verifyPaymentAndUpdateOrderStatus(
+  const payment = await verifyPaymentAndUpdateOrderStatus(
     razorpayOrderId,
     razorpayPaymentId,
     razorpaySignature,
   );
 
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(200, "Payment verified successfully", {
-        paymentId: payment._id,
-      }),
-    );
+  await sendMail({
+    mailGenContent: orderConfirmationMailContent(
+      req.user.username,
+      `${config.BASE_URL}/orders/${payment.order}`,
+    ),
+    email: req.user.email,
+    subject: "Order Confirmation",
+  });
+
+  return res.status(200).json(
+    new ApiResponse(200, "Payment verified successfully", {
+      paymentId: payment._id,
+    }),
+  );
 };
 
-export { CreatePayment };
+export { CreatePayment, verifyPayment };
