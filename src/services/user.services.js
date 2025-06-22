@@ -116,7 +116,7 @@ const findUserById = async (userId) => {
 
 const generateApiKeyService = async (userId) => {
   try {
-    const key = crypto.randomBytes(32).toString();
+    const key = crypto.randomBytes(32).toString("hex");
     const apiKey = await ApiKey.create({ owner: userId, key });
 
     return apiKey;

@@ -58,4 +58,4 @@ export const paymentStatusEnum = {
   FAILED: "FAILED",
 };
 
-export const AvailablePaymentStatus = Object.values(paymentStatus);
+export const AvailablePaymentStatus = Object.values(paymentStatusEnum);

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import {
   AvailablePaymentStatus,
   paymentStatusEnum,
-} from "../utils/constant.util";
+} from "../utils/constant.util.js";
 
 const paymentSchema = new mongoose.Schema({
   order: {

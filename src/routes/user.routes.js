@@ -21,7 +21,9 @@ router
   .route("/register")
   .post(validateData(registerUserSchema), asyncHandler(registerUser));
 
-router.route("/login").post(asyncHandler(loginUser));
+router
+  .route("/login")
+  .post(validateData(loginUserSchema), asyncHandler(loginUser));
 
 router.route("/logout").post(isLoggedIn, asyncHandler(logoutUser));
 

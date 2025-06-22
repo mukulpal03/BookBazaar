@@ -1,10 +1,12 @@
 import { config } from "../config/env.js";
+import { razorpayInstance } from "../lib/razorpay.js";
 import {
   createPayment,
   validateOrder,
   verifyPaymentAndUpdateOrderStatus,
 } from "../services/payment.service.js";
 import { ApiError } from "../utils/apiError.util.js";
+import { ApiResponse } from "../utils/apiRes.util.js";
 import { orderConfirmationMailContent, sendMail } from "../utils/mail.util.js";
 
 const CreatePayment = async (req, res) => {
@@ -13,7 +15,7 @@ const CreatePayment = async (req, res) => {
 
   const order = await validateOrder(orderId, userId);
 
-  const razorpayOrder = await razorpay.orders.create({
+  const razorpayOrder = await razorpayInstance.orders.create({
     amount: order.totalAmount * 100,
     currency: "INR",
     receipt: `receipt_order_${order._id}`,
